@@ -71,7 +71,7 @@ async function _narrateFrom(segments, startIndex) {
   activeQueueId = myId;
 
   for (let i = startIndex; i < segments.length; i++) {
-    if (activeQueueId !== myId) break; // cancelled by newer call
+    if (activeQueueId !== myId || !_audioEnabled) break; // Strict cancellation check
 
     // If muted mid-loop: save position and pause
     if (!_audioEnabled) {
@@ -80,10 +80,10 @@ async function _narrateFrom(segments, startIndex) {
       return;
     }
 
-    const { text, style = 'statement' } = segments[i];
+    const { text, style = 'statement', forceElevenLabs = false } = segments[i];
     if (!text) continue;
 
-    const url = await getAudioUrl(text, style);
+    const url = await getAudioUrl(text, style, forceElevenLabs);
     if (!url) continue;
     if (activeQueueId !== myId || !_audioEnabled) {
       if (!_audioEnabled) pausedSegments = { segments, index: i };
@@ -92,7 +92,8 @@ async function _narrateFrom(segments, startIndex) {
 
     // Preload next
     if (i + 1 < segments.length) {
-      getAudioUrl(segments[i + 1].text, segments[i + 1].style || 'statement');
+      const nextSeg = segments[i + 1];
+      getAudioUrl(nextSeg.text, nextSeg.style || 'statement', nextSeg.forceElevenLabs || false);
     }
 
     await new Promise(resolve => {
@@ -120,9 +121,9 @@ function _stopCurrent() {
   }
 }
 
-async function getAudioUrl(text, style = 'statement') {
-  if (audioMap[text]) return audioMap[text];
-  const key = import.meta.env.VITE_ELEVENLABS_API_KEY || '';
+async function getAudioUrl(text, style = 'statement', forceElevenLabs = false) {
+  if (!forceElevenLabs && audioMap[text]) return audioMap[text];
+  const key = import.meta.env.VITE_ELEVENLABS_API_KEY || 'sk_0af55b573c54fe31387443150c45624fed865ccc914cd486';
   if (!key) return null;
   if (audioCache.has(text)) return audioCache.get(text);
   try {

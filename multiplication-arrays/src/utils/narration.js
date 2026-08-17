@@ -69,9 +69,37 @@ export function reflectNarration() {
 }
 
 // ── Question narration ────────────────────────────────────────────────────────
+export function formatQuestionForSpeech(question) {
+  if (!question) return "";
+  const { rows, columns, total, missingSlot, questionText } = question;
+
+  const parts = [];
+
+  let text = questionText || "";
+  text = text.replace(/___/g, 'blank');
+  text = text.replace(/\s*×\s*/g, ' times ');
+  text = text.replace(/\s*=\s*/g, ' equals ');
+  text = text.replace(/\s+/g, ' ').trim();
+
+  if (text) {
+    parts.push(text);
+  }
+
+  if (missingSlot === 'rows' && columns && total && !text.includes('equals')) {
+    parts.push(`What number times ${columns} equals ${total}?`);
+  } else if (missingSlot === 'columns' && rows && total && !text.includes('equals')) {
+    parts.push(`${rows} times what number equals ${total}?`);
+  } else if (missingSlot === 'total' && rows && columns && !text.includes('equals')) {
+    parts.push(`What is ${rows} times ${columns}?`);
+  }
+
+  return parts.join(' ');
+}
+
 export function getQuestionNarration(question) {
   if (!question) return [];
-  return [ask(question.questionText)];
+  const spokenText = formatQuestionForSpeech(question);
+  return [{ text: spokenText, style: 'question', forceElevenLabs: true }];
 }
 
 export function getCorrectNarration(explanation) {
