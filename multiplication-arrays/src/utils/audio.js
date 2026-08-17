@@ -13,40 +13,47 @@ const STYLE_SETTINGS = {
 };
 
 // ── Internal state ───────────────────────────────────────────────────────────
-let _audioEnabled  = true;
-let activeQueueId  = null;   // Symbol id of the currently running queue
-let currentAudio   = null;   // The <audio> element currently playing
-let pausedSegments = null;   // { segments, index } saved when muted mid-queue
-const audioCache   = new Map();
+let _audioEnabled     = true;
+let activeQueueId     = null;   // Symbol id of the currently running queue
+let currentAudio      = null;   // The <audio> element currently playing
+let lastSegments      = null;   // Last requested narration segments
+let lastSegmentsIndex = 0;      // Current segment index within lastSegments
+const audioCache      = new Map();
 
 // ── Public API ───────────────────────────────────────────────────────────────
 
 /** Called by App when the user toggles the mute button */
 export function setAudioEnabled(val) {
-  const wasEnabled = _audioEnabled;
   _audioEnabled = val;
 
   if (!val) {
-    // Muting: pause + save position so we can resume later
+    // Muting: pause current audio immediately
     if (currentAudio && !currentAudio.paused) {
       currentAudio.pause();
-      // pausedSegments already has the right position from the narrate loop
     }
   } else {
-    // Unmuting: resume from saved position if available
-    if (pausedSegments) {
-      const { segments, index } = pausedSegments;
-      pausedSegments = null;
-      // Resume from the segment we paused on
-      _narrateFrom(segments, index);
+    // Unmuting: resume audio cleanly
+    getCtx();
+    if (currentAudio && currentAudio.paused && currentAudio.src) {
+      const p = currentAudio.play();
+      if (p && p.catch) {
+        p.catch(() => {
+          if (lastSegments) {
+            _narrateFrom(lastSegments, lastSegmentsIndex);
+          }
+        });
+      }
+    } else if (lastSegments) {
+      _narrateFrom(lastSegments, lastSegmentsIndex);
     }
   }
 }
 
 /** Stop everything and clear saved state */
 export function stopNarration() {
-  activeQueueId  = null;
-  pausedSegments = null;
+  activeQueueId     = null;
+  lastSegments      = null;
+  lastSegmentsIndex = 0;
   _stopCurrent();
 }
 
@@ -54,9 +61,9 @@ export function stopNarration() {
  *  Cancels any currently playing narration first. */
 export async function narrate(segments) {
   if (!segments || segments.length === 0) return;
-  // Always cancel any running queue
-  activeQueueId  = null;
-  pausedSegments = null;
+  lastSegments      = segments;
+  lastSegmentsIndex = 0;
+  activeQueueId     = null;
   _stopCurrent();
 
   if (!_audioEnabled) return; // queued but won't play until unmute
@@ -69,26 +76,18 @@ export async function narrate(segments) {
 async function _narrateFrom(segments, startIndex) {
   const myId = Symbol();
   activeQueueId = myId;
+  lastSegments  = segments;
 
   for (let i = startIndex; i < segments.length; i++) {
-    if (activeQueueId !== myId || !_audioEnabled) break; // Strict cancellation check
-
-    // If muted mid-loop: save position and pause
-    if (!_audioEnabled) {
-      pausedSegments = { segments, index: i };
-      _stopCurrent();
-      return;
-    }
+    if (activeQueueId !== myId || !_audioEnabled) break;
+    lastSegmentsIndex = i;
 
     const { text, style = 'statement', forceElevenLabs = false } = segments[i];
     if (!text) continue;
 
     const url = await getAudioUrl(text, style, forceElevenLabs);
     if (!url) continue;
-    if (activeQueueId !== myId || !_audioEnabled) {
-      if (!_audioEnabled) pausedSegments = { segments, index: i };
-      break;
-    }
+    if (activeQueueId !== myId || !_audioEnabled) break;
 
     // Preload next
     if (i + 1 < segments.length) {
@@ -99,9 +98,14 @@ async function _narrateFrom(segments, startIndex) {
     await new Promise(resolve => {
       const audio = new Audio(url);
       currentAudio = audio;
-      audio.onended  = resolve;
-      audio.onerror  = resolve;
-      audio.play().catch(() => resolve());
+      audio.onended = resolve;
+      audio.onerror = resolve;
+
+      if (_audioEnabled) {
+        audio.play().catch(() => resolve());
+      } else {
+        resolve();
+      }
     });
 
     if (activeQueueId !== myId) break;

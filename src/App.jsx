@@ -89,7 +89,11 @@ export default function App() {
             <ProgressMap currentPhase={phase} phaseComplete={phaseComplete} onSelectPhase={go} />
 
             <button
-              onClick={() => dispatch({ type: ACTIONS.TOGGLE_AUDIO })}
+              onClick={() => {
+                const nextVal = !audioEnabled;
+                dispatch({ type: ACTIONS.TOGGLE_AUDIO });
+                setAudioEnabled(nextVal);
+              }}
               aria-label={audioEnabled ? 'Mute sound' : 'Unmute sound'}
               title={audioEnabled ? 'Sound On (click to mute)' : 'Sound Muted (click to unmute)'}
               style={{
