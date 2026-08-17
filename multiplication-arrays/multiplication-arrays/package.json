@@ -1,0 +1,24 @@
+{
+  "name": "multiplication-arrays",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Intellia SG — Grade 2 Math: Multiplication Introduction to Arrays",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate-audio": "node scripts/generate_audio.js",
+    "clean-audio": "node scripts/clean_audio.js"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  }
+}
