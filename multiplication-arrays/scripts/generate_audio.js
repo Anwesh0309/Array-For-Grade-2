@@ -19,24 +19,27 @@ if (!API_KEY) {
     const envFile = fs.readFileSync(path.join(__dirname, '../.env.local'), 'utf8');
     const match = envFile.match(/VITE_ELEVENLABS_API_KEY=(.+)/);
     if (match) API_KEY = match[1].trim();
-  } catch {}
+  } catch { }
 }
 if (!API_KEY) {
   // Hardcoded for initial generation per PRD
-  API_KEY = 'sk_7ef27dccb32144843f8ee5068dfd4223a85326c56c14b00a';
+  API_KEY = 'sk_0af55b573c54fe31387443150c45624fed865ccc914cd486';
 }
 
 const VOICE_ID = 'Xb7hH8MSUJpSbSDYk0k2';
-const MODEL    = 'eleven_multilingual_v2';
+const MODEL = 'eleven_multilingual_v2';
 
 const STYLE_SETTINGS = {
-  celebration:   { stability: 0.12, similarity_boost: 0.45, style: 0.75, use_speaker_boost: true },
+  celebration: { stability: 0.12, similarity_boost: 0.45, style: 0.75, use_speaker_boost: true },
   encouragement: { stability: 0.16, similarity_boost: 0.50, style: 0.65, use_speaker_boost: true },
-  question:      { stability: 0.20, similarity_boost: 0.55, style: 0.55, use_speaker_boost: true },
-  emphasis:      { stability: 0.16, similarity_boost: 0.50, style: 0.60, use_speaker_boost: true },
-  thinking:      { stability: 0.24, similarity_boost: 0.60, style: 0.35, use_speaker_boost: true },
-  statement:     { stability: 0.20, similarity_boost: 0.55, style: 0.50, use_speaker_boost: true },
+  question: { stability: 0.20, similarity_boost: 0.55, style: 0.55, use_speaker_boost: true },
+  emphasis: { stability: 0.16, similarity_boost: 0.50, style: 0.60, use_speaker_boost: true },
+  thinking: { stability: 0.24, similarity_boost: 0.60, style: 0.35, use_speaker_boost: true },
+  statement: { stability: 0.20, similarity_boost: 0.55, style: 0.50, use_speaker_boost: true },
 };
+
+import Q from '../src/data/questionBank.js';
+import { formatQuestionForSpeech } from '../src/utils/narration.js';
 
 // All narration phrases
 const phrases = [
@@ -82,6 +85,16 @@ const phrases = [
   { text: "Before we finish, take a moment to think about what you learned today.", style: 'question' },
   { text: "Tell me one thing that surprised you, or one thing you found tricky. I am here to help!", style: 'encouragement' },
 ];
+
+// Add all practice phase question narrations dynamically
+if (Array.isArray(Q)) {
+  Q.forEach(q => {
+    const spokenText = formatQuestionForSpeech(q);
+    if (spokenText && !phrases.some(p => p.text === spokenText)) {
+      phrases.push({ text: spokenText, style: 'question' });
+    }
+  });
+}
 
 function slugify(text) {
   return text

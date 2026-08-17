@@ -84,9 +84,36 @@ export default function App() {
             Home
           </button>
 
-          {/* ── Center: Journey progress ── */}
-          <div style={{ pointerEvents: 'auto' }}>
-            <ProgressMap currentPhase={phase} phaseComplete={phaseComplete} />
+          {/* ── Center: Journey progress + Mute button ── */}
+          <div style={{ pointerEvents: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <ProgressMap currentPhase={phase} phaseComplete={phaseComplete} onSelectPhase={go} />
+
+            <button
+              onClick={() => dispatch({ type: ACTIONS.TOGGLE_AUDIO })}
+              aria-label={audioEnabled ? 'Mute sound' : 'Unmute sound'}
+              title={audioEnabled ? 'Sound On (click to mute)' : 'Sound Muted (click to unmute)'}
+              style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: 'rgba(10, 8, 32, 0.65)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#fff', fontSize: 16, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s', flexShrink: 0,
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                e.currentTarget.style.transform = 'scale(1.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(10, 8, 32, 0.65)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              {audioEnabled ? '🔊' : '🔇'}
+            </button>
           </div>
 
           {/* ── Right: close button ── */}

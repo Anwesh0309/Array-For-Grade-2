@@ -99,7 +99,7 @@ export function formatQuestionForSpeech(question) {
 export function getQuestionNarration(question) {
   if (!question) return [];
   const spokenText = formatQuestionForSpeech(question);
-  return [{ text: spokenText, style: 'question', forceElevenLabs: true }];
+  return [{ text: spokenText, style: 'question', forceElevenLabs: false }];
 }
 
 export function getCorrectNarration(explanation) {

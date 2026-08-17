@@ -3,7 +3,7 @@ export default function IntroScreen({ onStart }) {
     <div className="intro-page">
 
       {/* Curriculum badge */}
-      <div className="intro-badge">✨ Singapore MOE Curriculum · Grade 2</div>
+      <div className="intro-badge">✨ MOE Curriculum · Grade 2</div>
 
       {/* Main title */}
       <h1 className="intro-title">
@@ -20,7 +20,15 @@ export default function IntroScreen({ onStart }) {
       </div>
 
       {/* Subtitle */}
-      <p className="intro-subtitle">
+      <p className="intro-subtitle" style={{
+        fontFamily: 'Nunito, sans-serif',
+        fontSize: 'clamp(17px, 2.2vw, 23px)',
+        fontWeight: 800,
+        color: '#ffffff',
+        lineHeight: 1.5,
+        textAlign: 'center',
+        margin: 0
+      }}>
         Join Ryan on a journey to build, read, and multiply arrays<br />
         through stories, simulations, and fun games!
       </p>
@@ -51,7 +59,7 @@ export default function IntroScreen({ onStart }) {
         </div>
 
         {/* Row 2: Play → Reflect */}
-        <div className="intro-journey-row" style={{ justifyContent:'center', marginTop:8 }}>
+        <div className="intro-journey-row" style={{ justifyContent: 'center', marginTop: 8 }}>
           <div className="intro-journey-step-big">
             <div className="intro-step-icon-big">🎮</div>
             <div className="intro-step-name-big">Play</div>

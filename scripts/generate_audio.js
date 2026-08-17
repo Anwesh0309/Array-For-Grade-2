@@ -38,6 +38,9 @@ const STYLE_SETTINGS = {
   statement:     { stability: 0.20, similarity_boost: 0.55, style: 0.50, use_speaker_boost: true },
 };
 
+import Q from '../src/data/questionBank.js';
+import { formatQuestionForSpeech } from '../src/utils/narration.js';
+
 // All narration phrases
 const phrases = [
   // Wonder
@@ -82,6 +85,16 @@ const phrases = [
   { text: "Before we finish, take a moment to think about what you learned today.", style: 'question' },
   { text: "Tell me one thing that surprised you, or one thing you found tricky. I am here to help!", style: 'encouragement' },
 ];
+
+// Add all practice phase question narrations dynamically
+if (Array.isArray(Q)) {
+  Q.forEach(q => {
+    const spokenText = formatQuestionForSpeech(q);
+    if (spokenText && !phrases.some(p => p.text === spokenText)) {
+      phrases.push({ text: spokenText, style: 'question' });
+    }
+  });
+}
 
 function slugify(text) {
   return text

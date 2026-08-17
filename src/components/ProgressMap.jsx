@@ -8,13 +8,13 @@ const STEPS = [
   { id: 'wonder',   label: 'Wonder',   num: '01' },
   { id: 'story',    label: 'Story',    num: '02' },
   { id: 'simulate', label: 'Simulate', num: '03' },
-  { id: 'play',     label: 'Play',     num: '04' },
+  { id: 'play',     label: 'Practice', num: '04' },
   { id: 'reflect',  label: 'Reflect',  num: '05' },
 ];
 
 const ORDER = ['intro', 'wonder', 'story', 'simulate', 'play', 'reflect', 'results'];
 
-export default function ProgressMap({ currentPhase, phaseComplete }) {
+export default function ProgressMap({ currentPhase, phaseComplete = {}, onSelectPhase }) {
   const phaseIdx = ORDER.indexOf(currentPhase);
 
   return (
@@ -39,49 +39,67 @@ export default function ProgressMap({ currentPhase, phaseComplete }) {
         const stepIdx    = ORDER.indexOf(step.id);
         const isActive   = currentPhase === step.id;
         const isComplete = phaseComplete[step.id] || stepIdx < phaseIdx;
-        const isFuture   = !isActive && !isComplete;
 
         /* Circle styles */
         const circleBg = isActive
           ? '#facc15'
           : isComplete
           ? '#22c55e'
-          : 'rgba(255, 255, 255, 0.1)';
+          : 'rgba(255, 255, 255, 0.15)';
         const circleColor = isActive
           ? '#0f0a2e'
           : isComplete
           ? '#fff'
-          : 'rgba(255, 255, 255, 0.4)';
+          : '#fff';
         const circleBorder = (isActive || isComplete)
           ? 'none'
-          : '1px solid rgba(255, 255, 255, 0.2)';
+          : '1px solid rgba(255, 255, 255, 0.3)';
 
         /* Label styles */
         const labelColor = isActive
           ? '#facc15'
           : isComplete
           ? '#fff'
-          : 'rgba(255, 255, 255, 0.35)';
-        const labelWeight = isActive ? 900 : 700;
+          : 'rgba(255, 255, 255, 0.8)';
+        const labelWeight = isActive ? 900 : 800;
 
         return (
           <div key={step.id} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(4px, 1vw, 8px)' }}>
-            {/* Step node */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-            }}>
+            {/* Step node button */}
+            <button
+              onClick={() => onSelectPhase && onSelectPhase(step.id)}
+              aria-label={`Go to ${step.label} phase`}
+              title={`Switch to ${step.label}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'transparent',
+                border: 'none',
+                padding: '3px 6px',
+                borderRadius: 20,
+                cursor: 'pointer',
+                transition: 'transform 0.2s, opacity 0.2s',
+                outline: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.06)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
               {/* Numbered circle */}
               <div style={{
-                width: 24, height: 24, borderRadius: '50%',
+                width: 26, height: 26, borderRadius: '50%',
                 background: circleBg,
                 border: circleBorder,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'Fredoka One, sans-serif', fontWeight: 900,
-                fontSize: 10, color: circleColor,
+                fontSize: 12, color: circleColor,
                 flexShrink: 0,
                 transition: 'all 0.3s',
+                boxShadow: isActive ? '0 0 10px rgba(250, 204, 21, 0.5)' : 'none',
               }}>
                 {isComplete ? '✓' : step.num}
               </div>
@@ -90,14 +108,14 @@ export default function ProgressMap({ currentPhase, phaseComplete }) {
               <span style={{
                 fontFamily: 'Fredoka One, sans-serif',
                 fontWeight: labelWeight,
-                fontSize: 'clamp(11px, 1.2vw, 13px)',
+                fontSize: 'clamp(13px, 1.5vw, 16px)',
                 color: labelColor,
                 whiteSpace: 'nowrap',
                 transition: 'color 0.3s',
               }}>
                 {step.label}
               </span>
-            </div>
+            </button>
 
             {/* Connector line */}
             {i < STEPS.length - 1 && (
@@ -106,7 +124,7 @@ export default function ProgressMap({ currentPhase, phaseComplete }) {
                 height: 1,
                 background: isComplete || (isActive && ORDER.indexOf(STEPS[i+1].id) <= phaseIdx)
                   ? 'rgba(34, 197, 94, 0.5)'
-                  : 'rgba(255, 255, 255, 0.15)',
+                  : 'rgba(255, 255, 255, 0.25)',
                 flexShrink: 0,
                 transition: 'background 0.3s',
               }} />

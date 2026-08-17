@@ -71,7 +71,7 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
           /* ── Journal prompt form ── */
           <div style={{ display:'flex', flexDirection:'column', gap:'clamp(10px,1.8vh,18px)' }}>
             <div style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-              fontSize:'clamp(11px,1.5vw,14px)', color:'#facc15',
+              fontSize:'clamp(14px,1.8vw,18px)', color:'#facc15',
               textTransform:'uppercase', letterSpacing:2 }}>
               📝 Reflect — What did you learn?
             </div>
@@ -79,11 +79,11 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
             <div style={{ display:'flex', alignItems:'center', gap:16 }}>
               <Mascot mood="happy" size="sm" />
               <div style={{
-                background:'rgba(10,10,50,0.6)', border:'1px solid rgba(255,255,255,0.1)',
-                borderRadius:14, padding:'12px 18px', flex:1,
+                background:'rgba(10,10,50,0.8)', border:'1.5px solid rgba(255,255,255,0.18)',
+                borderRadius:16, padding:'14px 22px', flex:1,
               }}>
                 <p style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-                  fontSize:'clamp(14px,2vw,20px)', color:'#fff', lineHeight:1.4 }}>
+                  fontSize:'clamp(18px, 2.6vw, 24px)', color:'#fff', lineHeight:1.45, margin:0 }}>
                   {PROMPTS[promptIdx]}
                 </p>
               </div>
@@ -94,11 +94,11 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
               onChange={e => setResponse(e.target.value)}
               placeholder="Type your answer here… (or just pick a confidence level below)"
               style={{
-                width:'100%', minHeight:80,
-                background:'rgba(10,10,50,0.7)',
-                border:'1.5px solid rgba(255,255,255,0.14)',
-                borderRadius:12, padding:'12px 16px', color:'#fff',
-                fontFamily:'Nunito,sans-serif', fontSize:'clamp(13px,1.8vw,16px)', fontWeight:700,
+                width:'100%', minHeight:85,
+                background:'rgba(10,10,50,0.85)',
+                border:'1.5px solid rgba(255,255,255,0.2)',
+                borderRadius:14, padding:'14px 18px', color:'#fff',
+                fontFamily:'Nunito,sans-serif', fontSize:'clamp(16px,2.2vw,20px)', fontWeight:800,
                 resize:'vertical', outline:'none',
               }}
               aria-label="Reflection response"
@@ -107,7 +107,7 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
             {/* Confidence picker */}
             <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
               <div style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-                fontSize:'clamp(10px,1.4vw,13px)', color:'#facc15',
+                fontSize:'clamp(13px,1.6vw,16px)', color:'#facc15',
                 textTransform:'uppercase', letterSpacing:1.5 }}>
                 How confident do you feel about arrays?
               </div>
@@ -120,20 +120,20 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
                 ].map(c => (
                   <button key={c.level} onClick={() => setConfidence(c.level)}
                     style={{
-                      flex:'1 1 80px', padding:'8px 10px', cursor:'pointer',
-                      borderRadius:12, textAlign:'center',
+                      flex:'1 1 80px', padding:'10px 12px', cursor:'pointer',
+                      borderRadius:14, textAlign:'center',
                       border: confidence === c.level
-                        ? '2px solid #facc15' : '1.5px solid rgba(255,255,255,0.12)',
+                        ? '2px solid #facc15' : '1.5px solid rgba(255,255,255,0.2)',
                       background: confidence === c.level
-                        ? 'rgba(250,204,21,0.15)' : 'rgba(20,20,80,0.6)',
+                        ? 'rgba(250,204,21,0.25)' : 'rgba(20,20,80,0.7)',
                       transition:'all 0.2s',
                     }}
                     aria-pressed={confidence === c.level}
                   >
-                    <div style={{ fontSize:'clamp(18px,3vw,26px)' }}>{c.emoji}</div>
+                    <div style={{ fontSize:'clamp(26px,4vw,34px)' }}>{c.emoji}</div>
                     <div style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-                      fontSize:'clamp(9px,1.2vw,11px)', color:'rgba(255,255,255,0.7)',
-                      marginTop:3, textTransform:'uppercase', letterSpacing:1 }}>
+                      fontSize:'clamp(11px,1.4vw,14px)', color: confidence === c.level ? '#facc15' : '#fff',
+                      marginTop:4, textTransform:'uppercase', letterSpacing:1 }}>
                       {c.label}
                     </div>
                   </button>
@@ -144,7 +144,7 @@ export default function ReflectPhase({ audioEnabled, state, onComplete }) {
             <button className="btn-gold"
               onClick={handleSubmit}
               disabled={!response.trim() && !confidence}
-              style={{ width:'100%' }}>
+              style={{ width:'100%', fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(18px,2.5vw,24px)', padding:'12px' }}>
               Complete My Lesson! 🌟
             </button>
           </div>

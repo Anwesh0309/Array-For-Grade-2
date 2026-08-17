@@ -429,30 +429,35 @@ export default function StoryPhase({ audioEnabled, onComplete }) {
   };
 
   return (
-    <div className="phase-screen z-1" style={{ overflow: 'hidden', padding: 'clamp(20px, 4.5vh, 48px) 16px' }}>
-      <div className="story-phase-container" style={{
+    <div className="phase-screen z-1" style={{
+      width: '100%', height: '100%',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      overflow: 'hidden', padding: 'clamp(10px, 2vh, 20px) 16px',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
-        maxWidth: '520px',
+        maxWidth: '820px',
         margin: '0 auto',
-        flex: 1,
-        justifyContent: 'center'
+        gap: 'clamp(10px, 1.8vh, 16px)',
       }}>
-        {/* Top Progress Indicator: Bar + label */}
+        {/* Top Progress Bar: track + ratio label */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
+          gap: 14,
           width: '100%',
-          marginBottom: 14,
+          padding: '0 4px',
           flexShrink: 0
         }}>
           <div style={{
             flex: 1,
             height: 6,
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.12)',
             borderRadius: 50,
             overflow: 'hidden'
           }}>
@@ -466,7 +471,7 @@ export default function StoryPhase({ audioEnabled, onComplete }) {
           </div>
           <span style={{
             fontFamily: 'Fredoka One, sans-serif',
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: 900,
             color: 'rgba(255, 255, 255, 0.7)',
             whiteSpace: 'nowrap',
@@ -476,14 +481,32 @@ export default function StoryPhase({ audioEnabled, onComplete }) {
           </span>
         </div>
 
-        {/* Main Card */}
-        <div className="story-card">
-          {/* Illustration — PNG */}
-          <div className="story-illustration">
+        {/* ── Main Horizontal Story Card (matching SS) ── */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          width: '100%',
+          background: 'rgba(20, 18, 65, 0.85)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1.5px solid rgba(255, 255, 255, 0.14)',
+          borderRadius: 24,
+          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
+          overflow: 'hidden',
+          minHeight: 'clamp(280px, 42vh, 360px)',
+        }}>
+          {/* Left half: Illustration image */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            minHeight: '280px',
+            overflow: 'hidden',
+            background: '#0d0b26'
+          }}>
             <img
               src={`/assets/images/${panel.image}.png`}
               alt={panel.title}
-              className="scene-art"
               style={{
                 width: '100%',
                 height: '100%',
@@ -493,38 +516,82 @@ export default function StoryPhase({ audioEnabled, onComplete }) {
             />
           </div>
 
-          {/* Text Content */}
-          <div className="story-content">
-            <div className="story-panel-title">{panel.title}</div>
-            <p className="story-panel-text">{panel.text}</p>
+          {/* Right half: Story Text Content */}
+          <div style={{
+            padding: 'clamp(16px, 2.5vh, 28px) clamp(18px, 2.5vw, 32px)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            gap: 12,
+            overflow: 'hidden'
+          }}>
+            {/* Title & Body */}
+            <div>
+              <h2 style={{
+                fontFamily: 'Fredoka One, sans-serif',
+                fontWeight: 900,
+                fontSize: 'clamp(20px, 2.8vw, 28px)',
+                color: '#facc15',
+                margin: '0 0 10px 0',
+                lineHeight: 1.2
+              }}>
+                {panel.title}
+              </h2>
+              <p style={{
+                fontFamily: 'Nunito, sans-serif',
+                fontWeight: 800,
+                fontSize: 'clamp(15px, 1.9vw, 18px)',
+                color: '#ffffff',
+                lineHeight: 1.55,
+                margin: 0
+              }}>
+                {panel.text}
+              </p>
+            </div>
 
-            {/* Highlight box */}
-            <div className="story-highlight">
+            {/* Highlight box pill */}
+            <div style={{
+              background: 'rgba(12, 10, 40, 0.75)',
+              border: '1.5px solid rgba(250, 204, 21, 0.4)',
+              borderRadius: 14,
+              padding: '10px 16px',
+              textAlign: 'center',
+              fontFamily: 'Fredoka One, sans-serif',
+              fontWeight: 900,
+              fontSize: 'clamp(15px, 1.9vw, 18px)',
+              color: '#fde047',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
+            }}>
               ✨ {panel.highlight.replace(/^[^\w\s"']+\s*/, '').trim()} ✨
             </div>
 
             {/* Mascot row */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4, flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 2 }}>
               <div style={{
-                width: 44, height: 44, borderRadius: '50%',
+                width: 46, height: 46, borderRadius: '50%',
                 background: 'linear-gradient(135deg, #fbbf24, #d97706)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 24, boxShadow: '0 4px 12px rgba(251,191,36,0.3)',
+                fontSize: 24, boxShadow: '0 4px 12px rgba(251,191,36,0.35)',
                 flexShrink: 0
               }}>
-                🐻
+                🦁
               </div>
               <div style={{ position: 'relative', flex: 1 }}>
                 <div style={{
-                  background: '#fff', color: '#1a1a2e', borderRadius: '16px',
-                  padding: '10px 16px', fontSize: 13, fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  position: 'relative', display: 'inline-block'
+                  background: '#ffffff',
+                  color: '#1a1a2e',
+                  borderRadius: 16,
+                  padding: '9px 16px',
+                  fontFamily: 'Nunito, sans-serif',
+                  fontSize: 'clamp(13px, 1.7vw, 16px)',
+                  fontWeight: 800,
+                  boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
+                  position: 'relative',
+                  display: 'inline-block'
                 }}>
-                  {/* Speech bubble tail pointer */}
                   <div style={{
-                    position: 'absolute', left: -5, top: '50%', transform: 'translateY(-50%) rotate(45deg)',
-                    width: 10, height: 10, background: '#fff',
+                    position: 'absolute', left: -6, top: '50%', transform: 'translateY(-50%) rotate(45deg)',
+                    width: 10, height: 10, background: '#ffffff',
                   }} />
                   <span style={{ position: 'relative', zIndex: 1 }}>{panel.mascot}</span>
                 </div>
@@ -533,36 +600,71 @@ export default function StoryPhase({ audioEnabled, onComplete }) {
           </div>
         </div>
 
-        {/* Sibling navigation below card */}
-        <div className="story-nav" style={{
+        {/* Bottom Sibling Navigation */}
+        <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           width: '100%',
-          marginTop: 20,
           padding: '0 4px',
           flexShrink: 0
         }}>
           <button
-            className="btn-story-back"
             onClick={goPrev}
             disabled={idx === 0}
             aria-label="Previous panel"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: 50,
+              padding: '9px 26px',
+              fontFamily: 'Fredoka One, sans-serif',
+              fontWeight: 900,
+              fontSize: 'clamp(14px, 1.8vw, 17px)',
+              color: idx === 0 ? 'rgba(255, 255, 255, 0.3)' : '#ffffff',
+              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+              transition: 'all 0.2s',
+            }}
           >
             ← Back
           </button>
 
-          <div className="story-dots" aria-label="Panel progress">
+          {/* Interactive dots */}
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             {PANELS.map((_, i) => (
-              <div
+              <button
                 key={i}
-                className={`story-dot ${i === idx ? 'active' : ''}`}
-                aria-label={`Panel ${i + 1}`}
+                onClick={() => setIdx(i)}
+                aria-label={`Jump to panel ${i + 1}`}
+                style={{
+                  width: 13, height: 13, borderRadius: '50%',
+                  background: i === idx ? '#facc15' : i < idx ? '#4ade80' : 'rgba(255, 255, 255, 0.25)',
+                  border: 'none', cursor: 'pointer',
+                  transform: i === idx ? 'scale(1.25)' : 'scale(1)',
+                  transition: 'all 0.3s',
+                  boxShadow: i === idx ? '0 0 10px rgba(250, 204, 21, 0.5)' : 'none'
+                }}
               />
             ))}
           </div>
 
-          <button className="btn-story-next" onClick={goNext} aria-label="Next panel">
+          <button
+            onClick={goNext}
+            aria-label="Next panel"
+            style={{
+              background: 'linear-gradient(135deg, #fde047 0%, #facc15 50%, #eab308 100%)',
+              color: '#0f0a2e',
+              border: 'none',
+              borderRadius: 50,
+              padding: '10px 30px',
+              fontFamily: 'Fredoka One, sans-serif',
+              fontWeight: 900,
+              fontSize: 'clamp(15px, 1.9vw, 18px)',
+              cursor: 'pointer',
+              boxShadow: '0 6px 20px rgba(250, 204, 21, 0.35)',
+              transition: 'all 0.2s',
+            }}
+          >
             {idx < total - 1 ? 'Next →' : 'Simulate! 🧪'}
           </button>
         </div>

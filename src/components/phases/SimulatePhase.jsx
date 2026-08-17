@@ -53,70 +53,70 @@ export default function SimulatePhase({ audioEnabled, state, dispatch, ACTIONS, 
       position: 'relative',
     }}>
       {/* Phase colour band */}
-{/* Station tab bar — fixed inside this column, never scrolls away */}
+      {/* Station tab bar — fixed inside this column, all stations fully unlocked */}
       <div style={{
         display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap',
         padding: '10px 16px 6px',
         flexShrink: 0,
       }}>
         {STATIONS.map(st => (
-          <div
+          <button
             key={st.id}
+            onClick={() => dispatch({ type: ACTIONS.ADVANCE_SIM_STATION, payload: st.id })}
+            aria-label={`Go to ${st.label} station`}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px',
+              padding: '7px 16px',
               borderRadius: 50,
+              cursor: 'pointer',
               border: current === st.id
                 ? '2px solid #06b6d4'
                 : complete[st.id]
                   ? '2px solid #4caf50'
-                  : '1.5px solid rgba(255,255,255,0.12)',
+                  : '1.5px solid rgba(255,255,255,0.25)',
               background: current === st.id
-                ? 'rgba(6,182,212,0.15)'
+                ? 'rgba(6,182,212,0.25)'
                 : complete[st.id]
-                  ? 'rgba(76,175,80,0.12)'
-                  : 'rgba(20,20,80,0.55)',
-              boxShadow: current === st.id ? '0 0 14px rgba(6,182,212,0.25)' : 'none',
-              opacity: st.id > current && !complete[st.id] ? 0.45 : 1,
+                  ? 'rgba(76,175,80,0.2)'
+                  : 'rgba(20,20,80,0.65)',
+              boxShadow: current === st.id ? '0 0 14px rgba(6,182,212,0.35)' : 'none',
+              opacity: 1,
               transition: 'all 0.25s',
             }}
           >
-            <span style={{ fontSize: 15 }}>{complete[st.id] ? '✅' : st.icon}</span>
+            <span style={{ fontSize: 16 }}>{complete[st.id] ? '✅' : st.icon}</span>
             <span style={{
               fontFamily: 'Fredoka One, sans-serif', fontWeight: 900,
-              fontSize: 'clamp(10px,1.4vw,13px)',
-              color: current === st.id ? '#06b6d4' : complete[st.id] ? '#4caf50' : 'rgba(255,255,255,0.7)',
+              fontSize: 'clamp(11px,1.4vw,14px)',
+              color: current === st.id ? '#06b6d4' : complete[st.id] ? '#4caf50' : '#fff',
               textTransform: 'uppercase', letterSpacing: 1,
             }}>
               {st.label}
             </span>
-          </div>
+          </button>
         ))}
       </div>
 
-      {/* Scrollable station content */}
+      {/* Station content container — single frame fit */}
       <div style={{
         flex: 1,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        padding: '8px 16px 24px',
+        overflow: 'hidden',
+        padding: '4px 16px 16px',
         display: 'flex',
         justifyContent: 'center',
-        /* Custom scrollbar */
-        scrollbarWidth: 'thin',
-        scrollbarColor: '#6d28d9 #0d0b26',
+        alignItems: 'center',
       }}>
         <div style={{
           background: 'rgba(20,20,80,0.75)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255,255,255,0.12)',
           borderRadius: 20,
-          padding: 'clamp(16px,2.5vh,28px) clamp(14px,2.5vw,28px)',
+          padding: 'clamp(12px,2vh,24px) clamp(14px,2.5vw,28px)',
           width: '100%',
           maxWidth: 640,
           display: 'flex',
           justifyContent: 'center',
-          alignSelf: 'flex-start', // don't stretch — let content size it
+          alignItems: 'center',
         }}>
           {current === 0 && (
             <ArrayBuilderStation
