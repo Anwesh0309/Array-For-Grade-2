@@ -58,11 +58,11 @@ export default function IntroScreen({ onStart }) {
           </div>
         </div>
 
-        {/* Row 2: Play → Reflect */}
-        <div className="intro-journey-row" style={{ justifyContent: 'center', marginTop: 8 }}>
+        {/* Row 2: Practice → Reflect */}
+        <div className="intro-journey-row" style={{ justifyContent:'center', marginTop:8 }}>
           <div className="intro-journey-step-big">
             <div className="intro-step-icon-big">🎮</div>
-            <div className="intro-step-name-big">Play</div>
+            <div className="intro-step-name-big">Practice</div>
             <div className="intro-step-desc-big">Test your skills</div>
           </div>
           <div className="intro-arrow-big">→</div>

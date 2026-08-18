@@ -163,24 +163,21 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
     <div style={{
       width:'100%', height:'100%',
       display:'flex', flexDirection:'column',
-      alignItems:'center',
-      padding:'clamp(8px,1.2vh,14px) clamp(12px,2vw,20px)',
-      gap:'clamp(6px,1vh,10px)',
-      /* Allow scroll so nothing is ever cut off */
-      overflowY:'auto', overflowX:'hidden',
+      alignItems:'center', justifyContent:'center',
+      padding:'clamp(6px,1vh,12px) clamp(12px,2vw,20px)',
+      gap:'clamp(5px,0.9vh,8px)',
+      overflow:'hidden',
       boxSizing:'border-box',
-      scrollbarWidth:'thin',
-      scrollbarColor:'#6d28d9 #0d0b26',
     }}>
 
       {/* ── World label: "5. Volcano Peak 🌋" ── */}
       <div style={{
         background:'linear-gradient(135deg,#7c3aed,#4f46e5)',
-        borderRadius:50, padding:'5px 20px',
+        borderRadius:50, padding:'4px 20px',
         fontFamily:'Fredoka One,sans-serif', fontWeight:900,
         fontSize:'clamp(13px,1.9vw,18px)', color:'#fff',
-        boxShadow:'0 4px 18px rgba(99,102,241,0.4)',
-        flexShrink:0, letterSpacing:0.3,
+        boxShadow:'0 4px 16px rgba(99,102,241,0.35)',
+        flexShrink:0, letterSpacing:0.5,
       }}>
         {world.n}. {world.name} {world.emoji}
       </div>
@@ -192,28 +189,28 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
       }}>
         <div style={{
           fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-          fontSize:'clamp(12px,1.7vw,16px)', color:'#facc15',
-          display:'flex', alignItems:'center', gap:5,
+          fontSize:'clamp(13px,1.8vw,17px)', color:'#facc15',
+          display:'flex', alignItems:'center', gap:4,
         }}>⚡ {xp} XP</div>
 
         <div style={{
           fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-          fontSize:'clamp(11px,1.5vw,14px)', color:'rgba(255,255,255,0.4)',
+          fontSize:'clamp(11px,1.5vw,15px)', color:'rgba(255,255,255,0.75)',
         }}>
           Q {worldQIdx+1}/10 · Total {currentQuestion+1}/100
         </div>
 
         <div style={{
           fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-          fontSize:'clamp(12px,1.7vw,16px)', color:'#fb923c',
-          display:'flex', alignItems:'center', gap:5,
+          fontSize:'clamp(13px,1.8vw,17px)', color:'#fb923c',
+          display:'flex', alignItems:'center', gap:4,
         }}>🔥 {streak > 0 ? `${streak}x` : '–'}</div>
       </div>
 
       {/* ── Progress bar ── */}
       <div style={{ width:'100%', maxWidth:540, flexShrink:0 }}>
         <div style={{
-          height:6, background:'rgba(255,255,255,0.08)', borderRadius:50, overflow:'hidden',
+          height:6, background:'rgba(255,255,255,0.12)', borderRadius:50, overflow:'hidden',
         }}>
           <div style={{
             width:`${progressPct}%`, height:'100%', borderRadius:50,
@@ -225,13 +222,13 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
 
       {/* ── Question card ── */}
       <div style={{
-        background:'rgba(18,16,56,0.88)',
-        border:'1px solid rgba(255,255,255,0.09)',
+        background:'rgba(18,16,56,0.92)',
+        border:'1.5px solid rgba(255,255,255,0.15)',
         borderRadius:20,
-        padding:'clamp(12px,1.8vh,20px) clamp(14px,2.5vw,24px)',
+        padding:'clamp(10px,1.4vh,18px) clamp(14px,2.2vw,24px)',
         width:'100%', maxWidth:540,
         display:'flex', flexDirection:'column',
-        gap:'clamp(8px,1.3vh,14px)',
+        gap:'clamp(6px,1vh,11px)',
         boxSizing:'border-box',
         flexShrink:0,
       }}>
@@ -253,9 +250,11 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
         {showDiagram && (
           <div style={{
             display:'flex', justifyContent:'center',
-            background:'rgba(10,8,40,0.6)',
+            background:'rgba(10,8,40,0.7)',
             borderRadius:12, padding:'6px',
-            border:'1px solid rgba(255,255,255,0.07)',
+            border:'1px solid rgba(255,255,255,0.12)',
+            maxHeight:'clamp(90px, 18vh, 140px)',
+            overflow:'hidden',
           }}>
             <ArrayDiagram
               rows={question.rows}
@@ -271,8 +270,8 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
         {/* Question text */}
         <p style={{
           fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-          fontSize:'clamp(14px,2.1vw,21px)', color:'#fff',
-          textAlign:'center', lineHeight:1.4,
+          fontSize:'clamp(17px,2.5vw,25px)', color:'#fff',
+          textAlign:'center', lineHeight:1.3,
           wordBreak:'break-word', margin:0,
           flexShrink:0,
         }}>
@@ -287,27 +286,27 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
         {/* ── 2×2 answer options ── */}
         <div style={{
           display:'grid', gridTemplateColumns:'1fr 1fr',
-          gap:'clamp(7px,1.1vw,12px)',
+          gap:'clamp(6px,1vw,12px)',
         }}>
           {question.options?.map((opt, i) => {
             const isSelected = String(selected) === String(opt);
             const isCorrect  = String(opt) === String(question.correctAnswer);
 
-            let bg     = 'rgba(255,255,255,0.04)';
-            let border = '1.5px solid rgba(255,255,255,0.1)';
-            let color  = '#cbd5e1';
+            let bg     = 'rgba(255,255,255,0.06)';
+            let border = '2px solid rgba(255,255,255,0.18)';
+            let color  = '#ffffff';
             let scale  = 'scale(1)';
             let shadow = 'none';
 
             if (answered) {
               if (isCorrect) {
-                bg='rgba(74,222,128,0.2)'; border='2px solid #4ade80';
-                color='#4ade80'; shadow='0 0 14px rgba(74,222,128,0.3)';
+                bg='rgba(74,222,128,0.25)'; border='2px solid #4ade80';
+                color='#4ade80'; shadow='0 0 14px rgba(74,222,128,0.4)';
               } else if (isSelected && !isCorrect) {
-                bg='rgba(248,113,113,0.18)'; border='2px solid #f87171'; color='#fca5a5';
+                bg='rgba(248,113,113,0.22)'; border='2px solid #f87171'; color='#fca5a5';
               }
             } else if (isSelected) {
-              bg='rgba(99,102,241,0.28)'; border='2px solid #818cf8'; color='#fff'; scale='scale(1.02)';
+              bg='rgba(99,102,241,0.35)'; border='2px solid #818cf8'; color='#fff'; scale='scale(1.03)';
             }
 
             return (
@@ -315,16 +314,16 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
                 onClick={() => handleSelect(opt)}
                 disabled={answered}
                 style={{
-                  background:bg, border, color, borderRadius:13,
-                  padding:'clamp(10px,1.5vh,15px) 10px',
+                  background:bg, border, color, borderRadius:14,
+                  padding:'clamp(10px,1.4vh,15px) 10px',
                   fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-                  fontSize:'clamp(13px,1.9vw,19px)',
+                  fontSize:'clamp(15px,2.2vw,22px)',
                   cursor: answered ? 'default' : 'pointer',
                   transform: scale,
                   boxShadow: shadow,
                   transition:'all 0.18s ease',
                   textAlign:'center', minHeight:48,
-                  wordBreak:'break-word', lineHeight:1.3,
+                  wordBreak:'break-word', lineHeight:1.25,
                 }}
               >
                 {opt}
@@ -337,7 +336,7 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
         {!answered && (
           <div style={{
             textAlign:'center', fontFamily:'Nunito,sans-serif', fontWeight:700,
-            fontSize:'clamp(10px,1.3vw,12px)', color:'rgba(255,255,255,0.3)',
+            fontSize:'clamp(10px,1.2vw,12px)', color:'rgba(255,255,255,0.35)',
             flexShrink:0,
           }}>
             📝 Tap an answer to continue
@@ -349,7 +348,7 @@ export default function PlayPhase({ audioEnabled, state, dispatch, ACTIONS, onCo
           <div style={{
             textAlign:'center',
             fontFamily:'Fredoka One,sans-serif', fontWeight:900,
-            fontSize:'clamp(13px,1.8vw,17px)',
+            fontSize:'clamp(13px,1.8vw,16px)',
             color: String(selected) === String(question.correctAnswer) ? '#4ade80' : '#fca5a5',
             animation:'fadeInUp 0.3s ease',
             flexShrink:0,

@@ -51,7 +51,7 @@ function reducer(state, action) {
       return { ...state, phase: action.payload };
 
     case ACTIONS.ADVANCE_SIM_STATION:
-      return { ...state, currentSimStation: Math.min(2, state.currentSimStation + 1) };
+      return { ...state, currentSimStation: typeof action.payload === 'number' ? action.payload : Math.min(2, state.currentSimStation + 1) };
 
     case ACTIONS.COMPLETE_SIM_STATION: {
       const updated = [...state.simStationsComplete];

@@ -63,7 +63,7 @@ export default function ArrayBuilderStation({ audioEnabled, onComplete }) {
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'clamp(10px,1.6vh,16px)', width:'100%', maxWidth:580 }}>
 
       {/* Station label */}
-      <div style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(11px,1.5vw,14px)', color:'#facc15', textTransform:'uppercase', letterSpacing:2 }}>
+      <div style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(13px,1.7vw,16px)', color:'#facc15', textTransform:'uppercase', letterSpacing:2 }}>
         🏗️ Station A — Array Builder
       </div>
 
@@ -85,14 +85,14 @@ export default function ArrayBuilderStation({ audioEnabled, onComplete }) {
         transition:'border-color 0.3s',
         boxShadow: solved ? '0 0 18px rgba(74,222,128,0.25)' : 'none',
       }}>
-        <p style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(15px,2.2vw,20px)', color:'#fff', margin:0, lineHeight:1.4 }}>
+        <p style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(17px,2.5vw,22px)', color:'#fff', margin:0, lineHeight:1.4 }}>
           {challenge.label}
         </p>
-        <p style={{ fontFamily:'Nunito,sans-serif', fontWeight:700, fontSize:'clamp(12px,1.6vw,15px)', color:'rgba(255,255,255,0.55)', marginTop:6 }}>
+        <p style={{ fontFamily:'Nunito,sans-serif', fontWeight:800, fontSize:'clamp(14px,1.8vw,17px)', color:'rgba(255,255,255,0.75)', marginTop:6 }}>
           Target: <span style={{ color:'#facc15', fontWeight:900 }}>{challenge.targetRows} × {challenge.targetCols} = {challenge.targetRows * challenge.targetCols}</span>
         </p>
         {solved && (
-          <div style={{ marginTop:8, fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(14px,2vw,18px)', color:'#4ade80', animation:'bounceIn 0.4s ease' }}>
+          <div style={{ marginTop:8, fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(16px,2.2vw,20px)', color:'#4ade80', animation:'bounceIn 0.4s ease' }}>
             ✓ Correct! {rows} × {columns} = {total} 🎉
           </div>
         )}
@@ -102,7 +102,7 @@ export default function ArrayBuilderStation({ audioEnabled, onComplete }) {
       <div style={{ display:'flex', gap:'clamp(16px,3vw,32px)', flexWrap:'wrap', justifyContent:'center', alignItems:'center' }}>
         {/* Rows */}
         <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
-          <span style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(11px,1.5vw,14px)', color:'#38bdf8', textTransform:'uppercase', letterSpacing:1 }}>Rows</span>
+          <span style={{ fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(13px,1.6vw,16px)', color:'#38bdf8', textTransform:'uppercase', letterSpacing:1 }}>Rows</span>
           <div style={{ display:'flex', gap:8, alignItems:'center' }}>
             <button className="btn-num" onClick={removeRow} style={{ background:'rgba(248,113,113,0.2)', borderColor:'#f87171', color:'#f87171' }} aria-label="Remove row">−</button>
             <div style={{ background:'rgba(10,10,50,0.8)', border:'2px solid #38bdf8', borderRadius:12, padding:'8px 20px', fontFamily:'Fredoka One,sans-serif', fontWeight:900, fontSize:'clamp(20px,3.5vw,32px)', color:'#38bdf8', minWidth:64, textAlign:'center' }}>{rows}</div>
